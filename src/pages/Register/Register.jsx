@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Register.module.css";
 import { useState, useEffect } from "react";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 const Register = () => {
   const [displayName, setDisplayName] = useState("");
@@ -9,7 +10,9 @@ const Register = () => {
   const [confirmPassowrd, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const { createUser, error: authError, loading } = useAuthentication();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -25,8 +28,15 @@ const Register = () => {
       return;
     }
 
-    console.log(user);
+    const res = await createUser(user);
+    console.log(res);
   };
+
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
   return (
     <div className={styles.register}>
       <h1>Register for you are allow to post</h1>
@@ -60,7 +70,7 @@ const Register = () => {
             type="password"
             name="password"
             required
-            placeholder="Password of user"
+            placeholder="Password of user 6 characters"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -76,9 +86,17 @@ const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </label>
-        <button type="submit" className="btn">
-          Register
-        </button>
+        {!loading && (
+          <button type="submit" className="btn">
+            Register
+          </button>
+        )}
+        {loading && (
+          <button type="submit" disabled className="btn">
+            Wait...
+          </button>
+        )}
+
         {error && <p className="error">{error}</p>}
       </form>
     </div>
