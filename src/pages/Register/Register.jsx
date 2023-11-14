@@ -1,9 +1,88 @@
-import React from 'react'
+import React from "react";
+import styles from "./Register.module.css";
+import { useState, useEffect } from "react";
 
 const Register = () => {
-  return (
-    <div>Register</div>
-  )
-}
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassowrd, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
 
-export default Register
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+
+    const user = {
+      displayName,
+      email,
+      password,
+      confirmPassowrd,
+    };
+
+    if (password !== confirmPassowrd) {
+      setError("Password not match");
+      return;
+    }
+
+    console.log(user);
+  };
+  return (
+    <div className={styles.register}>
+      <h1>Register for you are allow to post</h1>
+      <p>Create your user and Show your histories</p>
+      <form action="" onSubmit={handleSubmit}>
+        <label htmlFor="">
+          <span>Name:</span>
+          <input
+            type="text"
+            name="displayName"
+            required
+            placeholder="Name of user"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
+        </label>
+        <label htmlFor="">
+          <span>Email:</span>
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Email of user"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label htmlFor="">
+          <span>Password:</span>
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Password of user"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <label htmlFor="">
+          <span>Confirm Password:</span>
+          <input
+            type="password"
+            name="confirmPassword"
+            required
+            placeholder="Confirm Password of user"
+            value={confirmPassowrd}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </label>
+        <button type="submit" className="btn">
+          Register
+        </button>
+        {error && <p className="error">{error}</p>}
+      </form>
+    </div>
+  );
+};
+
+export default Register;
