@@ -45,18 +45,22 @@ export const useAuthentication = () => {
         systemErrorMessage = "Password must be at least 6 characters long";
       } else if (error.message.includes("email")) {
         systemErrorMessage = "Email is not valid";
-      } else {
+      } else if(error.message.includes("email-already")) {
+        systemErrorMessage = "Email already in use";
+      }
+      else {
         systemErrorMessage = "Something went wrong";
       }
-
       setError(systemErrorMessage);
       setLoading(false);
+      console.log("Criado com sucesso")
     }
   };
   //logout signout
 
   const logout = async () => {
     signOut(auth);
+    console.log("Deslogado com sucesso")
   };
 
   //login
@@ -81,6 +85,7 @@ export const useAuthentication = () => {
 
       setLoading(false);
       setError(systemErrorMessage);
+      console.log("Logado com sucesso")
     }
   }
 
